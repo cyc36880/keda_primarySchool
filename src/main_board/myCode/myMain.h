@@ -6,7 +6,11 @@ extern "C" {
 #endif
 
 #include "main.h"
+#include "component/udcheck/udc.h"
+#include "component/zs_tools/src/zst_core.h"
 
+#define LOCK   1
+#define UNLOCK 0
 
 void setup(void);
 void loop(void);

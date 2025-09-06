@@ -44,7 +44,8 @@
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 void UART_Callback(UART_TypeDef *UARTx);
-void UART_Callback(uint16_t pin);
+void GPIO_Callback(GPIO_TypeDef * gpio);
+void TIM_Callback(void * tim);
 /* USER CODE END PFP */
 
 
@@ -182,7 +183,7 @@ void GPIOA_IRQHandler(void)
 void GPIOB_IRQHandler(void)
 {
     /* USER CODE BEGIN */
-
+    GPIO_Callback(CW_GPIOB);
     /* USER CODE END */
 }
 
@@ -302,7 +303,7 @@ void GTIM2_IRQHandler(void)
 void BTIM1_IRQHandler(void)
 {
     /* USER CODE BEGIN */
-
+    TIM_Callback(CW_BTIM1);
     /* USER CODE END */
 }
 

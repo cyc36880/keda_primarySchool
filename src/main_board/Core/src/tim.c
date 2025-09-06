@@ -1,9 +1,11 @@
 #include "tim.h"
+#include "drive/iremote/d_iremote.h"
 
 static void TIM_GPIO_Init(TIME_HandleTypeDef *timeHandle);
 
 TIME_HandleTypeDef atim = {0};
 TIME_HandleTypeDef gtim2 = {0};
+TIME_HandleTypeDef btim1 = {0};
 
 void MAX_ATIM_Init(void)
 {
@@ -75,6 +77,23 @@ void MAX_GTIM2_Init(void)
     GTIM_Cmd(CW_GTIM2, ENABLE);
 }
 
+void MAX_BTIM1_Init(void)
+{
+    __RCC_BTIM_CLK_ENABLE();
+
+    BTIM_TimeBaseInitTypeDef BTIM_TimeBaseInitStruct = {0};
+    BTIM_TimeBaseInitStruct.BTIM_Mode = BTIM_Mode_TIMER;
+    BTIM_TimeBaseInitStruct.BTIM_Prescaler = 32 - 1;   
+    BTIM_TimeBaseInitStruct.BTIM_Period = 10000 - 1;
+
+    BTIM_TimeBaseInit(CW_BTIM1, &BTIM_TimeBaseInitStruct);
+    BTIM_ITConfig(CW_BTIM1, BTIM_IT_OV, ENABLE);
+    BTIM_Cmd(CW_BTIM1, ENABLE);
+
+    NVIC_EnableIRQ(BTIM1_IRQn);
+}
+
+
 static void TIM_GPIO_Init(TIME_HandleTypeDef *timeHandle)
 {
     if (&atim == timeHandle)
@@ -116,5 +135,21 @@ static void TIM_GPIO_Init(TIME_HandleTypeDef *timeHandle)
     }
 }
 
+/*******************
+ * 中断
+ ******************/
+void TIM_PeriodElapsedCallback(TIME_HandleTypeDef * tim);
+void TIM_Callback(void * tim)
+{
+    if (CW_BTIM1 == tim)
+    {
+        TIM_PeriodElapsedCallback(&btim1);
+    }
+}
 
+void TIM_PeriodElapsedCallback(TIME_HandleTypeDef * tim)
+{
+    if (&btim1 == tim)
+        iremote_timOverFlow_callback(&iremote);
+}
 

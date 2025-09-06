@@ -1,6 +1,8 @@
 #include "uart.h"
 #include <stdio.h>
 
+#include "drive/protocol/d_protocol.h"
+
 static void UART_GPIO_Init(UART_HandleTypeDef *uartHandle);
 
 UART_HandleTypeDef uart1;
@@ -25,6 +27,11 @@ void MAX_UART1_Init(void)
     USART_Init(CW_UART1, &USART_InitStructure);
 
     USART_ITConfig(CW_UART1, USART_IT_RC, ENABLE);
+
+    //优先级，无优先级分组
+    NVIC_SetPriority(UART1_IRQn, 0);
+    //UARTx中断使能
+    NVIC_EnableIRQ(UART1_IRQn);
 }
 
 static void UART_GPIO_Init(UART_HandleTypeDef *uartHandle)
@@ -70,5 +77,9 @@ void UART_Callback(UART_TypeDef *UARTx)
 
 static void UART_RxCpltCallback(UART_HandleTypeDef *uart)
 {
-    
+    if (&uart1 == uart)
+    {
+        uint8_t data = USART_ReceiveData_8bit(CW_UART1);
+        udc_pack_receive_data(&protocol_pack_KX0, &data, 1);
+    }
 }

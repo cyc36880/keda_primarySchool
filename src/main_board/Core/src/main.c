@@ -6,12 +6,10 @@
 #include "myMain.h"
 
 static void RCC_Configuration(void);
-static void NVIC_Configuration(void);
 
 int main()
 {
     RCC_Configuration();
-    NVIC_Configuration();
     MAX_ATIM_Init();
     MAX_GTIM2_Init();
     MAX_UART1_Init();
@@ -44,19 +42,6 @@ static void RCC_Configuration(void)
 
     RCC_SystemCoreClockUpdate(48000000);
     InitTick(48000000);
-}
-
-/**
- * @brief  Configure the nested vectored interrupt controller.
- * @param  None
- * @retval None
- */
-static void NVIC_Configuration(void)
-{
-    //优先级，无优先级分组
-    NVIC_SetPriority(UART1_IRQn, 0);
-    //UARTx中断使能
-    NVIC_EnableIRQ(UART1_IRQn);
 }
 
 /******************************************************************************

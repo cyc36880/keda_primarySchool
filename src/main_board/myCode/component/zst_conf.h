@@ -1,0 +1,75 @@
+#ifndef __ZST_CONF_H__
+#define __ZST_CONF_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "stdint.h"
+#include "stdbool.h"
+#include <stddef.h>
+
+#define ZST_USE_ALLOC    1
+#define ZST_TICK_CUSTOM  2
+#define ZST_USE_LOG      0
+#define ZST_USE_TIMER    0
+#define ZST_USE_EVENT    0
+#define ZST_RUN_ONE      0
+#define ZST_USE_PTASK    1
+#define ZST_USE_REGISTER 0
+#define ZST_USE_PID      0
+#define ZST_SHA256       1
+
+
+#if ZST_USE_ALLOC
+    #define ZST_MEM_CUSTOM 0
+    #if (ZST_MEM_CUSTOM)
+        #define ZST_MEM_CUSTOM_INCLUDE     "stdlib.h"
+        #define ZST_MEM_CUSTOM_ALLOC(x)     malloc(x)
+        #define ZST_MEM_CUSTOM_FREE(x)      free(x)
+        #define ZST_MEM_CUSTOM_REALLOC(x,y) realloc(x,y)
+    #else
+        // for how many k bytes
+        #define ZST_MEM_SIZE (5)
+    #endif
+#endif
+
+/*Use a custom tick source that tells the elapsed time in milliseconds.
+ *It removes the need to manually update the tick with `zst_tick_inc()`).
+*/
+#if ZST_TICK_CUSTOM
+    #define ZST_TICK_CUSTOM_INCLUDE     "myMain.h"
+    #define ZST_TICK_CUSTOM_SYS_TIME    (GetTick())
+#endif
+
+
+#if ZST_USE_LOG
+    // 0 - 5
+    #define ZST_LOG_LEVEL  5
+#endif
+
+/**
+ * public events
+ */
+#if (ZST_USE_EVENT == 1)
+
+    #define ZST_EVENT_PUBLIC ZST_EVENTR_0,\
+                             ZST_EVENTR_1
+#endif
+
+#if (ZST_USE_REGISTER == 1)
+    // 0:addr8, 1:addr16
+    #define ZST_REGISTER_ADDR16    0
+    #define SZT_TRGISTER_USE_NAME  1
+#endif
+
+#if (ZST_USE_PID == 1)
+    // only float or double
+    #define ZST_PID_CALC_TYPE  float
+#endif
+
+#ifdef __cplusplus
+} /*extern "C"*/
+#endif
+
+#endif /* __ZST_CONF_H__ */
