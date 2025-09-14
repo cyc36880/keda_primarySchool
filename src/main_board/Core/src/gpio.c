@@ -15,12 +15,12 @@ void MAX_GPIO_Init(void)
     GPIO_WritePin(CW_GPIOA, GPIO_POWER_EN_Pin, GPIO_Pin_SET);
 
     GPIO_InitStructure.IT = GPIO_IT_RISING | GPIO_IT_FALLING;
-    GPIO_InitStructure.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
     GPIO_InitStructure.Pins = GPIO_IRM_Pin;
     GPIO_Init(GPIO_IRM_Port, &GPIO_InitStructure);
 
-    GPIO_ConfigFilter(GPIO_IRM_Port, bv1, GPIO_FLTCLK_RC150K);
-    GPIOB_INTFLAG_CLR(bv1| bv2);
+    // GPIO_ConfigFilter(GPIO_IRM_Port, bv3, GPIO_FLTCLK_RC150K);
+    // GPIOB_INTFLAG_CLR(bv3);
     NVIC_EnableIRQ(GPIOB_IRQn);
 }
 
@@ -30,15 +30,18 @@ void MAX_GPIO_Init(void)
 static void GPIO_ExitCallback(GPIO_TypeDef * gpio,  uint16_t pin);
 void GPIO_Callback(GPIO_TypeDef * gpio)
 {
-    uint8_t pin = 0;
+    uint8_t pos_pin = 0;
+    uint32_t pin = 0;
     for (uint8_t i=0; i<16; i++)
     {
         if (gpio->ISR & (1<<i))
         {
-            pin = i;
+            pos_pin = i;
             break;
         }
     }
+    pin = 1 << pos_pin;
+    gpio->ICR = (~((uint32_t)(pin))); // 清除中断标志
     GPIO_ExitCallback(gpio, pin);
 }
 

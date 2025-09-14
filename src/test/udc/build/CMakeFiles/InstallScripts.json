@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/Desktop/keda_xx2/code/src/test/udc/build/cmake_install.cmake",
+		"D:/Desktop/keda_xx2/code/src/test/udc/build/udcheck_bin/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

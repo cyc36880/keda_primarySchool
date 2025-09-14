@@ -10,9 +10,9 @@ extern "C" {
 #include <stddef.h>
 
 #define ZST_USE_ALLOC    1
-#define ZST_TICK_CUSTOM  2
-#define ZST_USE_LOG      0
-#define ZST_USE_TIMER    0
+#define ZST_TICK_CUSTOM  1
+#define ZST_USE_LOG      1
+#define ZST_USE_TIMER    1
 #define ZST_USE_EVENT    0
 #define ZST_RUN_ONE      0
 #define ZST_USE_PTASK    1
@@ -30,7 +30,7 @@ extern "C" {
         #define ZST_MEM_CUSTOM_REALLOC(x,y) realloc(x,y)
     #else
         // for how many k bytes
-        #define ZST_MEM_SIZE (5)
+        #define ZST_MEM_SIZE (6)
     #endif
 #endif
 
@@ -45,7 +45,7 @@ extern "C" {
 
 #if ZST_USE_LOG
     // 0 - 5
-    #define ZST_LOG_LEVEL  5
+    #define ZST_LOG_LEVEL  0
 #endif
 
 /**

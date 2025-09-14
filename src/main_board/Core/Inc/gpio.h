@@ -7,6 +7,7 @@ extern "C" {
 
 #include "main.h"
 
+void MAX_GPIO_Init(void);
 
 #ifdef __cplusplus
 }

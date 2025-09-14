@@ -14,7 +14,7 @@ void MAX_UART1_Init(void)
     __RCC_UART1_CLK_ENABLE();
 
     USART_InitTypeDef USART_InitStructure = {0};
-
+    uart1.Instance = CW_UART1;
     USART_InitStructure.USART_BaudRate = 115200;
     USART_InitStructure.USART_Over = USART_Over_16;
     USART_InitStructure.USART_Source = USART_Source_PCLK;
@@ -26,17 +26,17 @@ void MAX_UART1_Init(void)
     USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
     USART_Init(CW_UART1, &USART_InitStructure);
 
-    USART_ITConfig(CW_UART1, USART_IT_RC, ENABLE);
-
     //优先级，无优先级分组
     NVIC_SetPriority(UART1_IRQn, 0);
     //UARTx中断使能
     NVIC_EnableIRQ(UART1_IRQn);
+
+    USART_ITConfig(CW_UART1, USART_IT_RC, ENABLE);
 }
 
 static void UART_GPIO_Init(UART_HandleTypeDef *uartHandle)
 {
-    __RCC_GPIOB_CLK_ENABLE();
+    __RCC_GPIOA_CLK_ENABLE();
 
     //UART TX RX 复用
     PA08_AFx_UART1TXD();
@@ -45,11 +45,21 @@ static void UART_GPIO_Init(UART_HandleTypeDef *uartHandle)
     GPIO_InitTypeDef GPIO_InitStructure = {0};
     GPIO_InitStructure.Pins = GPIO_PIN_8;
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_Init(CW_GPIOB, &GPIO_InitStructure);
+    GPIO_Init(CW_GPIOA, &GPIO_InitStructure);
 
     GPIO_InitStructure.Pins = GPIO_PIN_9;
     GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
-    GPIO_Init(CW_GPIOB, &GPIO_InitStructure);    
+    GPIO_Init(CW_GPIOA, &GPIO_InitStructure);    
+}
+
+void uart_send_data(UART_HandleTypeDef *uartHandle, uint8_t *data, uint16_t len)
+{
+    uint16_t i = 0;
+    for (i = 0; i < len; i++)
+    {
+        USART_SendData_8bit(uartHandle->Instance, data[i]);
+        while (USART_GetFlagStatus(uartHandle->Instance, USART_FLAG_TXE) == RESET);
+    }
 }
 
 /*****************************

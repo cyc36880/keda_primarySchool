@@ -30,8 +30,8 @@ void MAX_ATIM_Init(void)
 
     ATIM_OCInitStruct.BufferState = DISABLE;
     ATIM_OCInitStruct.OCDMAState = DISABLE;
-    ATIM_OCInitStruct.OCInterruptSelect = ATIM_OC_IT_UP_COUNTER;
-    ATIM_OCInitStruct.OCInterruptState = ENABLE;
+    ATIM_OCInitStruct.OCInterruptSelect = ATIM_OC_IT_NONE;
+    ATIM_OCInitStruct.OCInterruptState = DISABLE;
     ATIM_OCInitStruct.OCMode = ATIM_OCMODE_PWM1;
     ATIM_OCInitStruct.OCPolarity = ATIM_OCPOLARITY_NONINVERT;
 
@@ -42,14 +42,13 @@ void MAX_ATIM_Init(void)
     ATIM_OC2BInit(&ATIM_OCInitStruct);
     ATIM_OC3BInit(&ATIM_OCInitStruct);
 
-    ATIM_SetCompare1A(100);
-    ATIM_SetCompare2A(200);
-    ATIM_SetCompare3A(300);
-    ATIM_SetCompare1B(400);
-    ATIM_SetCompare2B(500);
-    ATIM_SetCompare3B(600);
+    ATIM_SetCompare1A(0);
+    ATIM_SetCompare2A(0);
+    ATIM_SetCompare3A(0);
+    ATIM_SetCompare1B(0);
+    ATIM_SetCompare2B(0);
+    ATIM_SetCompare3B(0);
 
-    ATIM_PWMOutputConfig(OCREFA_TYPE_SINGLE, OUTPUT_TYPE_COMP, 1);
     ATIM_CtrlPWMOutputs(ENABLE);
     ATIM_Cmd(ENABLE);
 }
@@ -58,7 +57,7 @@ void MAX_GTIM2_Init(void)
 {
     TIM_GPIO_Init(&gtim2);
 
-    __RCC_GTIM1_CLK_ENABLE();
+    __RCC_GTIM2_CLK_ENABLE();
 
     GTIM_InitTypeDef GTIM_InitStruct = {0};
     GTIM_InitStruct.Mode = GTIM_MODE_TIME;
@@ -71,8 +70,8 @@ void MAX_GTIM2_Init(void)
     GTIM_OCInit(CW_GTIM2, GTIM_CHANNEL2, GTIM_OC_OUTPUT_PWM_HIGH);
     GTIM_OCInit(CW_GTIM2, GTIM_CHANNEL1, GTIM_OC_OUTPUT_PWM_HIGH);
 
-    GTIM_SetCompare2(CW_GTIM2, 500);
-    GTIM_SetCompare1(CW_GTIM2, 500);
+    GTIM_SetCompare1(CW_GTIM2, 0);
+    GTIM_SetCompare2(CW_GTIM2, 0);
 
     GTIM_Cmd(CW_GTIM2, ENABLE);
 }
@@ -84,7 +83,7 @@ void MAX_BTIM1_Init(void)
     BTIM_TimeBaseInitTypeDef BTIM_TimeBaseInitStruct = {0};
     BTIM_TimeBaseInitStruct.BTIM_Mode = BTIM_Mode_TIMER;
     BTIM_TimeBaseInitStruct.BTIM_Prescaler = 32 - 1;   
-    BTIM_TimeBaseInitStruct.BTIM_Period = 10000 - 1;
+    BTIM_TimeBaseInitStruct.BTIM_Period = 65535 - 1;
 
     BTIM_TimeBaseInit(CW_BTIM1, &BTIM_TimeBaseInitStruct);
     BTIM_ITConfig(CW_BTIM1, BTIM_IT_OV, ENABLE);
@@ -144,12 +143,15 @@ void TIM_Callback(void * tim)
     if (CW_BTIM1 == tim)
     {
         TIM_PeriodElapsedCallback(&btim1);
+        BTIM_ClearITPendingBit(CW_BTIM1, BTIM_IT_OV);
     }
 }
 
 void TIM_PeriodElapsedCallback(TIME_HandleTypeDef * tim)
 {
     if (&btim1 == tim)
+    {
         iremote_timOverFlow_callback(&iremote);
+    }
 }
 

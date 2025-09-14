@@ -1,0 +1,38 @@
+[
+{
+  "directory": "D:/Desktop/keda_xx2/code/src/test/udc/build",
+  "command": "D:\\msys64\\mingw64\\bin\\gcc.exe -ID:/Desktop/keda_xx2/code/src/test/udc -ID:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck -g -o CMakeFiles\\main.dir\\main.c.obj -c D:\\Desktop\\keda_xx2\\code\\src\\test\\udc\\main.c",
+  "file": "D:\\Desktop\\keda_xx2\\code\\src\\test\\udc\\main.c",
+  "output": "CMakeFiles\\main.dir\\main.c.obj"
+},
+{
+  "directory": "D:/Desktop/keda_xx2/code/src/test/udc/build",
+  "command": "D:\\msys64\\mingw64\\bin\\gcc.exe -ID:/Desktop/keda_xx2/code/src/test/udc -ID:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck -g -o CMakeFiles\\main.dir\\udc_init.c.obj -c D:\\Desktop\\keda_xx2\\code\\src\\test\\udc\\udc_init.c",
+  "file": "D:\\Desktop\\keda_xx2\\code\\src\\test\\udc\\udc_init.c",
+  "output": "CMakeFiles\\main.dir\\udc_init.c.obj"
+},
+{
+  "directory": "D:/Desktop/keda_xx2/code/src/test/udc/build",
+  "command": "D:\\msys64\\mingw64\\bin\\gcc.exe -ID:/Desktop/keda_xx2/code/src/test/udc -ID:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck -g -o udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\core\\udc_core.c.obj -c D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\core\\udc_core.c",
+  "file": "D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\core\\udc_core.c",
+  "output": "udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\core\\udc_core.c.obj"
+},
+{
+  "directory": "D:/Desktop/keda_xx2/code/src/test/udc/build",
+  "command": "D:\\msys64\\mingw64\\bin\\gcc.exe -ID:/Desktop/keda_xx2/code/src/test/udc -ID:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck -g -o udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\core\\udc_event.c.obj -c D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\core\\udc_event.c",
+  "file": "D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\core\\udc_event.c",
+  "output": "udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\core\\udc_event.c.obj"
+},
+{
+  "directory": "D:/Desktop/keda_xx2/code/src/test/udc/build",
+  "command": "D:\\msys64\\mingw64\\bin\\gcc.exe -ID:/Desktop/keda_xx2/code/src/test/udc -ID:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck -g -o udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\hal\\udc_hal_tick.c.obj -c D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\hal\\udc_hal_tick.c",
+  "file": "D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\hal\\udc_hal_tick.c",
+  "output": "udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\hal\\udc_hal_tick.c.obj"
+},
+{
+  "directory": "D:/Desktop/keda_xx2/code/src/test/udc/build",
+  "command": "D:\\msys64\\mingw64\\bin\\gcc.exe -ID:/Desktop/keda_xx2/code/src/test/udc -ID:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck -g -o udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\misc\\udc_mem.c.obj -c D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\misc\\udc_mem.c",
+  "file": "D:\\Desktop\\keda_xx2\\code\\src\\main_board\\myCode\\component\\udcheck\\src\\misc\\udc_mem.c",
+  "output": "udcheck_bin\\CMakeFiles\\udcheck.dir\\src\\misc\\udc_mem.c.obj"
+}
+]

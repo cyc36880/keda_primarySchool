@@ -59,7 +59,7 @@ void iremote_init(iremote_t * iremote, float tick_us, uint16_t overflow_count);
 void iremote_timOverFlow_callback(iremote_t * iremote);
 void iremote_gpio_interrupt_callback(iremote_t * iremote);
 uint8_t remote_scan(iremote_t * iremote);
-
+uint8_t remote_get_key_count(iremote_t * iremote);
 
 
 #ifdef __cplusplus

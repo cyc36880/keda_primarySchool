@@ -27,7 +27,10 @@ void iremote_init(iremote_t * iremote, float tick_us, uint16_t overflow_count)
 
 void iremote_timOverFlow_callback(iremote_t * iremote)
 {
-    iremote->g_remote.state.overflowCounter++;
+    if (++iremote->g_remote.state.overflowCounter > 2)
+    {
+        iremote->g_remote.state.get_guidanceCode = 0;
+    }
 }
 
 void iremote_gpio_interrupt_callback(iremote_t *iremote)
@@ -111,4 +114,9 @@ uint8_t remote_scan(iremote_t * iremote)
         }
     }
     return sta;
+}
+
+uint8_t remote_get_key_count(iremote_t * iremote)
+{
+    return iremote->g_remote.count;
 }

@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\Core\Inc;..\Drivers\inc;..\myCode</IncludePath>
+              <IncludePath>..\myCode\component;..\Core\Inc;..\Drivers\inc;..\myCode</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -686,6 +686,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>misc</GroupName>
+          <Files>
+            <File>
+              <FileName>data_structure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\misc\data_structure.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>bsp</GroupName>
         </Group>
         <Group>
@@ -720,6 +730,36 @@
               <FileName>d_misc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\myCode\drive\misc\d_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>d_sys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\drive\sys\d_sys.c</FilePath>
+            </File>
+            <File>
+              <FileName>d_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\drive\motor\d_motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>d_ultr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\drive\ultr\d_ultr.c</FilePath>
+            </File>
+            <File>
+              <FileName>d_gray.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\drive\gray\d_gray.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>sys</GroupName>
+          <Files>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\sys\delay.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,0 +1,6 @@
+D:/Desktop/keda_xx2/code/src/test/udc/build/CMakeFiles/main.dir
+D:/Desktop/keda_xx2/code/src/test/udc/build/CMakeFiles/edit_cache.dir
+D:/Desktop/keda_xx2/code/src/test/udc/build/CMakeFiles/rebuild_cache.dir
+D:/Desktop/keda_xx2/code/src/test/udc/build/udcheck_bin/CMakeFiles/udcheck.dir
+D:/Desktop/keda_xx2/code/src/test/udc/build/udcheck_bin/CMakeFiles/edit_cache.dir
+D:/Desktop/keda_xx2/code/src/test/udc/build/udcheck_bin/CMakeFiles/rebuild_cache.dir

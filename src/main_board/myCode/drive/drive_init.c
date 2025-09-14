@@ -2,15 +2,18 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 17:55:01
- * @LastEditTime : 2025-09-06 21:01:46
+ * @LastEditTime : 2025-09-12 15:30:26
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
 #include "drive_init.h"
+#include "drive/sys/d_sys.h"
 #include "drive/iremote/d_iremote.h"
 #include "drive/protocol/d_protocol.h"
 #include "drive/buzzer/d_buzzer.h"
 #include "drive/misc/d_misc.h"
+#include "drive/motor/d_motor.h"
+
 
 /******************
  * data struct 
@@ -37,10 +40,12 @@
  *******************/
 void drive_init(void)
 {
-    d_iremote_init();
     d_protocol_init();
+    d_sys_init();
+    d_iremote_init();
     d_buzzer_init();
     d_misc_init();
+    d_motor_init();
 }
 
 

@@ -1,4 +1,5 @@
 #include "main.h"
+#include "gpio.h"
 #include "tim.h"
 #include "uart.h"
 #include "adc.h"
@@ -10,11 +11,13 @@ static void RCC_Configuration(void);
 int main()
 {
     RCC_Configuration();
+    MAX_GPIO_Init();
     MAX_ATIM_Init();
     MAX_GTIM2_Init();
+    MAX_BTIM1_Init();
     MAX_UART1_Init();
     MAX_ADC_Init();
-
+    
     setup();
     while(1)
     {
