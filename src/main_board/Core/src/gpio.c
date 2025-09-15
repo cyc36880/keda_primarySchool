@@ -8,12 +8,27 @@ void MAX_GPIO_Init(void)
 
     GPIO_InitTypeDef GPIO_InitStructure = { 0 };
 
+    /**********************
+     *         key
+     *********************/
+    GPIO_InitStructure.IT = GPIO_IT_NONE;
+    GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
+    GPIO_InitStructure.Pins = KEY0_Pin | KEY1_Pin | KEY2_Pin | KEY3_Pin;
+    GPIO_Init(CW_GPIOB, &GPIO_InitStructure);
+
+
+    /**********************
+     *         电源
+     *********************/
     GPIO_InitStructure.IT = GPIO_IT_NONE;
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStructure.Pins = GPIO_POWER_EN_Pin;
     GPIO_Init(CW_GPIOA, &GPIO_InitStructure);
     GPIO_WritePin(CW_GPIOA, GPIO_POWER_EN_Pin, GPIO_Pin_SET);
 
+    /**********************
+     *         红外
+     *********************/
     GPIO_InitStructure.IT = GPIO_IT_RISING | GPIO_IT_FALLING;
     GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
     GPIO_InitStructure.Pins = GPIO_IRM_Pin;

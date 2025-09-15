@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 12:37:20
- * @LastEditTime : 2025-09-14 20:30:55
+ * @LastEditTime : 2025-09-15 09:46:33
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -18,9 +18,6 @@ void setup(void)
     zst_init();
     ptask_root_1_collection.ptask_root_1 = ptask_root_create(&zst_ptask_list, NULL); // 创建根任务
     drive_init();
-
-    // printf("%d\n", zst_mem_free_size());
-    // printf("%d\n", zst_mem_used_size());
 }
 
 void loop(void)

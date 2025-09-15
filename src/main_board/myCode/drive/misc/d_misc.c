@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 20:59:33
- * @LastEditTime : 2025-09-14 11:26:02
+ * @LastEditTime : 2025-09-15 10:39:54
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -14,6 +14,7 @@
  * 4. 按键*4
  ***********************************************/
 #include "d_misc.h"
+#include "gpio.h"
 #include "drive/protocol/d_protocol.h"
 
 /******************
@@ -108,6 +109,10 @@ void d_misc_init(void)
  ***************************/
 static void ptask_run_callback(ptask_t * ptask)
 {
+    dev.key[0] = GPIO_ReadPin(KEY0_Port, KEY0_Pin);
+    dev.key[1] = GPIO_ReadPin(KEY1_Port, KEY1_Pin);
+    dev.key[2] = GPIO_ReadPin(KEY2_Port, KEY2_Pin);
+    dev.key[3] = GPIO_ReadPin(KEY3_Port, KEY3_Pin);
 }
 
 

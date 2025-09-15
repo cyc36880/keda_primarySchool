@@ -27,6 +27,14 @@ extern "C" {
 #define ADC_GRAY_3_CHANNEL    ADC_ExInputCH3 // 灰度3
 #define ADC_GRAY_4_CHANNEL    ADC_ExInputCH3 // 灰度4
 
+#define KEY0_Port CW_GPIOB
+#define KEY0_Pin  GPIO_PIN_4
+#define KEY1_Port CW_GPIOB
+#define KEY1_Pin  GPIO_PIN_5
+#define KEY2_Port CW_GPIOB
+#define KEY2_Pin  GPIO_PIN_6
+#define KEY3_Port CW_GPIOB
+#define KEY3_Pin  GPIO_PIN_7
 
 #ifdef __cplusplus
 }

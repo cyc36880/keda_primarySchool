@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 17:55:01
- * @LastEditTime : 2025-09-12 15:30:26
+ * @LastEditTime : 2025-09-15 11:00:46
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -13,7 +13,7 @@
 #include "drive/buzzer/d_buzzer.h"
 #include "drive/misc/d_misc.h"
 #include "drive/motor/d_motor.h"
-
+#include "drive/gray/d_gray.h"
 
 /******************
  * data struct 
@@ -40,7 +40,8 @@
  *******************/
 void drive_init(void)
 {
-    d_protocol_init();
+    d_protocol_init(); // 采用icrp方案
+
     d_sys_init();
     d_iremote_init();
     d_buzzer_init();

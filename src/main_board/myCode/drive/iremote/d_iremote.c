@@ -9,6 +9,7 @@
 
 typedef struct
 {
+    uint8_t status;
     uint8_t count;
     uint8_t id;
 } d_drive_t;
@@ -27,11 +28,16 @@ static uint32_t irm_get_countVal(struct _iremote *iremote);
 static d_drive_t dev = {0};
 static data_element_t element_array[] = {
     [0] = {
+        .name = "status",
+        .data = &dev.status,
+        .size = sizeof(dev.status),
+    },
+    [2] = {
         .name = "count",
         .data = &dev.count,
         .size = sizeof(dev.count),
     },
-    [1] = {
+    [2] = {
         .name = "id",
         .data = &dev.id,
         .size = sizeof(dev.id),

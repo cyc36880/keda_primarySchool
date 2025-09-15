@@ -693,6 +693,11 @@
               <FileType>1</FileType>
               <FilePath>..\myCode\misc\data_structure.c</FilePath>
             </File>
+            <File>
+              <FileName>myMath.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\myCode\misc\myMath.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -2,7 +2,6 @@
 #include "sys/delay.h"
 #include "uart.h"
 
-
 /******************
  * data struct 
  *****************/
@@ -112,7 +111,10 @@ static void subscribe_loop(void)
     static uint32_t buffer_index = 0;
     static uint32_t buffer_size = 0;
     static uint8_t * buffer = NULL;
+    uint8_t append_data_count = 0; // 向pack中append数据的次数
 
+    udc_pack_clear(&protocol_pack_KX0, UDC_PACK_TRANSMIT); // 清空发送缓冲区
+    udc_pack_append_data(&protocol_pack_KX0, PACK_IDENTIFY_ID, 1, (uint8_t []){11}); // 添加命令
     DATA_PACK_GROUP_FOREACH(&protocol_data_pack_KX0, group,
         foreach_count=0;
         buffer_index = 0;
@@ -146,11 +148,27 @@ static void subscribe_loop(void)
                 ZST_LOG("element_name %s, size %d", element->name, element->size);
             }
             foreach_count++;
+            buffer_index += (uintptr_t)element->data - (uintptr_t)group->elements_array;
         );
-        // udc_pack_append_data(&protocol_pack_KX0, group->addr, buffer_size, buffer);
+        if (0 != udc_pack_append_data(&protocol_pack_KX0, group->addr, buffer_size, buffer)) // 内部可能填充满了
+        {
+            append_data_count = 0;
+            udc_pack_push(&protocol_pack_KX0); // 
+            delay_ms(10); // 分包发送需要一定间隔，避免主机处理不及时丢失数据
+            udc_pack_append_data(&protocol_pack_KX0, PACK_IDENTIFY_ID, 1, (uint8_t []){11}); // 添加命令
+            udc_pack_append_data(&protocol_pack_KX0, group->addr, buffer_size, buffer);
+        }
+        else
+        {
+            append_data_count++;
+        }
         zst_mem_free(buffer);
         buffer = NULL;
     );
+    if (append_data_count > 0)
+        udc_pack_push(&protocol_pack_KX0); // 
+    else
+        udc_pack_clear(&protocol_pack_KX0, UDC_PACK_TRANSMIT); // 清空发送缓冲区
 }
 
 // 主机向从机发送数据
@@ -185,7 +203,9 @@ static int protocol_command_give(const udc_pack_t *pack)
 // 主机向从机请求数据
 static int protocol_command_get(udc_pack_t *pack)
 {
+    uint8_t append_data_count = 0; // 向pack中append数据的次数
     udc_pack_clear(pack, UDC_PACK_TRANSMIT); // 清空发送缓冲区
+    udc_pack_append_data(pack, PACK_IDENTIFY_ID, 1, (uint8_t []){10}); // 添加命令
     udc_obj_t obj;
     UDC_PACK_OBJ_FOREACH(UDC_PACK_RECEIVE, pack, &obj, 
         if (obj.id >= 100) continue;
@@ -232,12 +252,29 @@ static int protocol_command_get(udc_pack_t *pack)
                 memcpy(&buffer[buffer_index + 2], element->data, element->size); // data
                 buffer_index += 2 + element->size;
             }
-            udc_pack_append_data(pack, obj.id, buffer_size, buffer);
+            if (0 != udc_pack_append_data(pack, obj.id, buffer_size, buffer)) // 内部可能填充满了
+            {
+                append_data_count = 0;
+                udc_pack_push(pack); // 
+                delay_ms(10); // 分包发送需要一定间隔，避免主机处理不及时丢失数据
+                udc_pack_append_data(pack, PACK_IDENTIFY_ID, 1, (uint8_t []){10}); // 添加命令
+                udc_pack_append_data(pack, obj.id, buffer_size, buffer);
+            }
+            else
+            {
+                append_data_count ++;
+            }
             zst_mem_free(buffer);
         }
     );
-    udc_pack_append_data(pack, PACK_IDENTIFY_ID, 1, (uint8_t []){10}); // 添加命令
-    udc_pack_push(pack);
+    if (append_data_count > 0)
+    {
+        udc_pack_push(pack);
+    }
+    else
+    {
+        udc_pack_clear(pack, UDC_PACK_TRANSMIT); // 清空发送缓冲区
+    }
     return 0;
 }
 

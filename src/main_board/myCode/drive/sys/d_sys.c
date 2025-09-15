@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 13:55:25
- * @LastEditTime : 2025-09-12 19:33:01
+ * @LastEditTime : 2025-09-15 11:21:52
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -18,7 +18,6 @@
 typedef struct
 {
     uint8_t power;    // 电量
-
 } d_drive_t;
 
 
