@@ -2,13 +2,14 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 17:32:31
- * @LastEditTime : 2025-09-15 11:22:22
+ * @LastEditTime : 2025-09-16 10:33:25
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
 #include "d_motor.h"
 #include "drive/protocol/d_protocol.h"
 #include "tim.h"
+#include "misc/myMath.h"
 
 /******************
  * data struct 
@@ -17,7 +18,7 @@
 
 typedef struct
 {
-    int8_t speed[2]; // 左右轮子转速
+    int8_t speed[2]; // 轮子转速
 } d_drive_t;
 
 
@@ -37,6 +38,16 @@ static data_element_t element_array[] = {
         .name = "speed",
         .data = &dev.speed,
         .size = sizeof(dev.speed),
+    },
+    [1] = {
+        .name = "speedL",
+        .data = &dev.speed[0],
+        .size = 1,
+    },
+    [2] = {
+        .name = "speedR",
+        .data = &dev.speed[1],
+        .size = 1,
     },
 };
 static uint8_t comparison_buffer[sizeof(dev)] = {0};
@@ -59,8 +70,8 @@ static data_group_t group = {
  *******************/
 void d_motor_init(void)
 {
-    motorL_set_speed(80);
-    motorR_set_speed(80);
+    motorL_set_speed(0);
+    motorR_set_speed(0);
 
 
     /****************
@@ -92,44 +103,70 @@ static void ptask_run_callback(ptask_t * ptask)
     DATA_GROUP_ELEMENT_CHACK_CHANGE_FOREACH(&group, element, 
         if (0 == strcmp(element->name, "speed"))
         {
-            ZST_LOG("speed%d speed: %d", dev.speed[0], dev.speed[1]);
+            ZST_LOG("speed: %d speed: %d", dev.speed[0], dev.speed[1]);
             motorL_set_speed(dev.speed[0]);
             motorR_set_speed(dev.speed[1]);
+        }
+        else if (0 == strcmp(element->name, "speedL"))
+        {
+            ZST_LOG("speedL: %d", dev.speed[0]);
+            motorL_set_speed(dev.speed[0]);
+        }
+        else if (0 == strcmp(element->name, "speedR"))
+        {
+            ZST_LOG("speedR: %d", dev.speed[1]);
+            motorL_set_speed(dev.speed[1]);
         }
     );
 }
 
 static void motorL_set_speed(int16_t speed)
 {
-    speed *= 10;
-    speed = speed > 1000 ? 1000 : speed;
-    speed = speed < -1000 ? -1000 : speed;
+    speed = min(100, max(-100, speed));
+    uint16_t speed_abs = myabs(speed);
+    if (speed_abs == 0)
+    {
+        ATIM_SetCompare2A(0);
+        ATIM_SetCompare3A(0);
+        return;
+    }
+
+    speed_abs = number_map(speed_abs, 0, 100+1, 400, 1000+1);
+
     if (speed > 0)
     {
-        ATIM_SetCompare2A(speed);
+        ATIM_SetCompare2A(speed_abs);
         ATIM_SetCompare3A(0);
     }
     else
     {
         ATIM_SetCompare2A(0);
-        ATIM_SetCompare3A(-speed);
+        ATIM_SetCompare3A(speed_abs);
     }
 }
 
 static void motorR_set_speed(int16_t speed)
 {
-    speed *= 10;
-    speed = speed > 1000 ? 1000 : speed;
-    speed = speed < -1000 ? -1000 : speed;
+    speed = min(100, max(-100, speed));
+    uint16_t speed_abs = myabs(speed);
+    if (speed_abs == 0)
+    {
+        GTIM_SetCompare2(CW_GTIM2, 0);
+        GTIM_SetCompare1(CW_GTIM2, 0);
+        return;
+    }
+
+    speed_abs = number_map(speed_abs, 0, 100+1, 400, 1000+1);
+
     if (speed > 0)
     {
-        GTIM_SetCompare2(CW_GTIM2, speed);
+        GTIM_SetCompare2(CW_GTIM2, speed_abs);
         GTIM_SetCompare1(CW_GTIM2, 0);
     }
     else
     {
         GTIM_SetCompare2(CW_GTIM2, 0);
-        GTIM_SetCompare1(CW_GTIM2, -speed);
+        GTIM_SetCompare1(CW_GTIM2, speed_abs);
     }
 }
 

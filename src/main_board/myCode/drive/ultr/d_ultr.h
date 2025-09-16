@@ -6,7 +6,11 @@ extern "C" {
 #endif
 
 #include "myMain.h"
+#include "ultr.h"
 
+void d_ultr_init(void);
+
+extern ultr_t ultr;
 
 #ifdef __cplusplus
 }

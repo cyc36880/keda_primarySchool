@@ -30,7 +30,7 @@ extern "C" {
         #define ZST_MEM_CUSTOM_REALLOC(x,y) realloc(x,y)
     #else
         // for how many k bytes
-        #define ZST_MEM_SIZE (6)
+        #define ZST_MEM_SIZE (5)
     #endif
 #endif
 
@@ -44,7 +44,7 @@ extern "C" {
 
 
 #if ZST_USE_LOG
-    // 0 - 5
+    // 0 - 6
     #define ZST_LOG_LEVEL  0
 #endif
 

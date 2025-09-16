@@ -173,7 +173,7 @@ void RCC_IRQHandler(void)
 void GPIOA_IRQHandler(void)
 {
     /* USER CODE BEGIN */
-
+    GPIO_Callback(CW_GPIOA);
     /* USER CODE END */
 }
 

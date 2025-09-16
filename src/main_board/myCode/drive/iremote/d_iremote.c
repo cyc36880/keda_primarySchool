@@ -32,7 +32,7 @@ static data_element_t element_array[] = {
         .data = &dev.status,
         .size = sizeof(dev.status),
     },
-    [2] = {
+    [1] = {
         .name = "count",
         .data = &dev.count,
         .size = sizeof(dev.count),
@@ -45,7 +45,7 @@ static data_element_t element_array[] = {
 };
 static uint8_t comparison_buffer[sizeof(dev)] = {0};
 static data_group_t group = {
-    .name = "iremote",
+    .name = LOG_TAG,
     .addr = DEVICE_ADDR_IRM,
     .elements_array = element_array,
     .elements_count = sizeof(element_array) / sizeof(element_array[0]),
@@ -98,11 +98,24 @@ void d_iremote_init(void)
 static void ptask_run_callback(ptask_t * ptask)
 {
     uint8_t remote_val = remote_scan(&iremote);
-    if (remote_val) 
-    {
-        ZST_LOGD(LOG_TAG, "remote_val: %d\n", remote_val);
-        ZST_LOGD(LOG_TAG, "key count : %d\n", remote_get_key_count(&iremote));
-    }
+    dev.id = remote_val;
+
+    #if ZST_LOG_LEVEL>0
+        if (remote_val)
+        {
+            ZST_LOG("remote_val = %d", remote_val);
+        }
+    #endif
+
+    data_element_t * element = NULL;
+
+    // 根据状态完成自动订阅
+    DATA_GROUP_ELEMENT_CHACK_CHANGE_FOREACH(&group, element,
+        if (0 == strcmp("status", element->name))
+        {
+            data_group_get_element_4name(&group, "id")->subscribe = dev.status;
+        }
+    );
 }
 
 

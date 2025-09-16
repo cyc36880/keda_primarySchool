@@ -27,7 +27,7 @@ void iremote_init(iremote_t * iremote, float tick_us, uint16_t overflow_count)
 
 void iremote_timOverFlow_callback(iremote_t * iremote)
 {
-    if (++iremote->g_remote.state.overflowCounter > 2)
+    if (++iremote->g_remote.state.overflowCounter > 5)
     {
         iremote->g_remote.state.get_guidanceCode = 0;
     }

@@ -56,9 +56,9 @@ uint32_t adc_get_value(uint32_t adc_channel)
     ADC_SingleChOneModeCfg(&ADC_SingleChStructure);
     ADC_SoftwareStartConvCmd(ENABLE);
     while (0 == CW_ADC->ISR_f.EOC);
+    CW_ADC->IER = 0;
     return ADC_GetConversionValue();
 }
-
 
 
 static void ADC_GPIO_Init(ADC_HandleTypeDef *adcHandle)

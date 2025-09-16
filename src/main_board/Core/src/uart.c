@@ -36,20 +36,20 @@ void MAX_UART1_Init(void)
 
 static void UART_GPIO_Init(UART_HandleTypeDef *uartHandle)
 {
-    __RCC_GPIOA_CLK_ENABLE();
+    __RCC_GPIOB_CLK_ENABLE();
 
     //UART TX RX 复用
-    PA08_AFx_UART1TXD();
-    PA09_AFx_UART1RXD();
+    PB08_AFx_UART1TXD();
+    PB09_AFx_UART1RXD();
     
     GPIO_InitTypeDef GPIO_InitStructure = {0};
     GPIO_InitStructure.Pins = GPIO_PIN_8;
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_Init(CW_GPIOA, &GPIO_InitStructure);
+    GPIO_Init(CW_GPIOB, &GPIO_InitStructure);
 
     GPIO_InitStructure.Pins = GPIO_PIN_9;
     GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
-    GPIO_Init(CW_GPIOA, &GPIO_InitStructure);    
+    GPIO_Init(CW_GPIOB, &GPIO_InitStructure);    
 }
 
 void uart_send_data(UART_HandleTypeDef *uartHandle, uint8_t *data, uint16_t len)

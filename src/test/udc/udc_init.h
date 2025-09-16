@@ -9,8 +9,8 @@ extern "C" {
 #include "stdio.h"
 #include "udc.h"
 
-#define UDC_PACK_HEADER    "KX0"
-#define UDC_PACK_HEADER_LEN 3
+#define UDC_PACK_HEADER    "\xAA\x55"
+#define UDC_PACK_HEADER_LEN 2
 
 void udc_init(void);
 

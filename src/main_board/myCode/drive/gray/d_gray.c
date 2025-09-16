@@ -36,7 +36,6 @@ static data_element_t element_array[] = {
         .name = "value",
         .data = &dev.value,
         .size = sizeof(dev.value),
-        .subscribe = 1, // 默认标记为订阅
     },
 };
 static uint8_t comparison_buffer[sizeof(dev)] = {0};
@@ -58,8 +57,7 @@ static data_group_t group = {
  *******************/
 void d_gray_init(void)
 {
-    set_gray_light(0, 255, 255);
-
+    set_gray_light(0, 0, 0);
     /****************
      * 数据包初始化
      ****************/
@@ -85,7 +83,24 @@ void d_gray_init(void)
  ***************************/
 static void ptask_run_callback(ptask_t * ptask)
 {
-    
+    dev.value[0] = number_map(adc_get_value(ADC_GRAY_0_CHANNEL), 0, 4095 + 1, 0, 255 + 1);
+    dev.value[1] = number_map(adc_get_value(ADC_GRAY_1_CHANNEL), 0, 4095 + 1, 0, 255 + 1);
+    dev.value[2] = number_map(adc_get_value(ADC_GRAY_2_CHANNEL), 0, 4095 + 1, 0, 255 + 1);
+    dev.value[3] = number_map(adc_get_value(ADC_GRAY_3_CHANNEL), 0, 4095 + 1, 0, 255 + 1);
+    dev.value[4] = number_map(adc_get_value(ADC_GRAY_4_CHANNEL), 0, 4095 + 1, 0, 255 + 1);
+
+    // 根据状态完成自动订阅
+    static data_element_t * element = NULL;
+    DATA_GROUP_ELEMENT_CHACK_CHANGE_FOREACH(&group, element, 
+        if (0 == strcmp(element->name, "status"))
+        {
+            data_group_get_element_4name(&group, "value")->subscribe = dev.status;
+            if (dev.status)
+                set_gray_light(200, 200, 200);
+            else
+                set_gray_light(0, 0, 0);
+        }
+    );
 }
 
 
@@ -96,8 +111,8 @@ static void set_gray_light(uint8_t r, uint8_t g, uint8_t b)
     uint16_t g_val = number_map(g, 0, 255 + 1, 0, 1000 + 1);
     uint16_t b_val = number_map(b, 0, 255 + 1, 0, 1000 + 1);
 
-    ATIM_SetCompare1A(r_val);
-    ATIM_SetCompare2A(g_val);
-    ATIM_SetCompare3A(b_val);
+    ATIM_SetCompare1A(1000 - r_val);
+    ATIM_SetCompare3B(1000 - g_val);
+    ATIM_SetCompare2B(1000 - b_val);
 }
 

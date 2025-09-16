@@ -83,8 +83,7 @@ int data_element_eliminate_differences(data_group_t * data_group, data_element_t
     if (NULL == data_group->comparison_buffer) return -1;
     uintptr_t offset = (uintptr_t)element - (uintptr_t)data_group->elements_array;
     uint8_t index = offset / sizeof(data_element_t);
-    // memcmp((uint8_t *)(data_group->comparison_buffer) + index, element->data, element->size);
-    memcpy(element->data, (uint8_t *)(data_group->comparison_buffer) + index, element->size);
+    memcpy((uint8_t *)(data_group->comparison_buffer) + index, element->data, element->size);
     return 0;
 }
 
