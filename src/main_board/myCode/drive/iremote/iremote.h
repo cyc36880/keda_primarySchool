@@ -53,6 +53,7 @@ typedef struct _iremote
     IRemote_standardTime_t ir_1680us;
     IRemote_standardTime_t ir_2250us;
     IRemote_standardTime_t ir_4500us;
+    uint8_t init_finsh : 1;
 } iremote_t;
 
 void iremote_init(iremote_t * iremote, float tick_us, uint16_t overflow_count);

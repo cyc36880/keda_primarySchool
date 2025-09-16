@@ -35,12 +35,32 @@
 
 #include "myMain.h"
 #include "drive/drive_init.h"
+#include "drive/protocol/d_protocol.h"
 
+/******************
+ * data struct
+ *****************/
+
+ /****************************
+ * function declaration
+ ***************************/
 static void wait_start(void);
+static void timer_cb(zst_timer_t *timer);
 
+/********************
+ * static variables
+ *******************/
+
+
+ /********************
+ * global variables
+ *******************/
 ptask_root_1_collection_t ptask_root_1_collection = {0};
 ptask_1_collection_t ptask_1_collection = {0};
 
+/********************
+ * global functions
+ *******************/
 void setup(void)
 {
     zst_init();
@@ -57,7 +77,9 @@ void loop(void)
 }
 
 
-
+/****************************
+ * static function
+ ***************************/
 static void wait_start(void)
 {
     uint32_t last_tick = zst_tick_get();
@@ -74,7 +96,20 @@ static void wait_start(void)
         }
     }
     GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, POWER_EN_LEVEL);
-    zst_task_handler(); // 运行一次主程序，以发送一次开机指令
-    while (GPIO_ReadPin(GPIO_POWER_Port, GPIO_POWER_Pin) == 0)
-        ;
+    zst_timer_create(&zst_ztimer, timer_cb, 5, (void *)3);
+}
+
+static void timer_cb(zst_timer_t *timer)
+{
+    uint32_t data = (uint32_t)timer->user_data;
+    if (0 == data)
+    {
+        zst_timer_del(&zst_ztimer, timer);
+    }
+    else
+    {
+        udc_pack_push_single(&protocol_pack_KX0, 0, 2, (uint8_t []){1, 1});
+        data--;
+        timer->user_data = (void *)data;
+    }
 }

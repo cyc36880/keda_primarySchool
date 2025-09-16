@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 17:32:31
- * @LastEditTime : 2025-09-16 10:33:25
+ * @LastEditTime : 2025-09-16 18:53:33
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -93,6 +93,12 @@ void d_motor_init(void)
         ZST_LOGI(LOG_TAG, "ptask create success!");
 }
 
+void d_motor_reset(void)
+{
+    dev.speed[0] = 0;
+    dev.speed[1] = 0;
+    element_array[0].receive_change_flag = 1;
+}
 
 /****************************
  * static function
@@ -115,7 +121,7 @@ static void ptask_run_callback(ptask_t * ptask)
         else if (0 == strcmp(element->name, "speedR"))
         {
             ZST_LOG("speedR: %d", dev.speed[1]);
-            motorL_set_speed(dev.speed[1]);
+            motorR_set_speed(dev.speed[1]);
         }
     );
 }
@@ -124,6 +130,7 @@ static void motorL_set_speed(int16_t speed)
 {
     speed = min(100, max(-100, speed));
     uint16_t speed_abs = myabs(speed);
+    
     if (speed_abs == 0)
     {
         ATIM_SetCompare2A(0);

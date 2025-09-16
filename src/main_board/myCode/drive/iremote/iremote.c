@@ -23,10 +23,13 @@ void iremote_init(iremote_t * iremote, float tick_us, uint16_t overflow_count)
     iremote->ir_4500us.max = 4700 / tick_us;
 
     iremote->overflow_count = overflow_count;
+
+    iremote->init_finsh = 1;
 }
 
 void iremote_timOverFlow_callback(iremote_t * iremote)
 {
+    if (0 == iremote->init_finsh) return;
     if (++iremote->g_remote.state.overflowCounter > 5)
     {
         iremote->g_remote.state.get_guidanceCode = 0;
@@ -35,6 +38,7 @@ void iremote_timOverFlow_callback(iremote_t * iremote)
 
 void iremote_gpio_interrupt_callback(iremote_t *iremote)
 {
+    if (0 == iremote->init_finsh) return;
     uint16_t dval; /* 下降沿时计数器的值 */
 
     if (iremote->get_gpio_pin_level(iremote)) /* 上升沿捕获 */

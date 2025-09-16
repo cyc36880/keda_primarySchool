@@ -9,6 +9,7 @@ extern "C" {
 #include "ultr.h"
 
 void d_ultr_init(void);
+void d_ultr_reset(void);
 
 extern ultr_t ultr;
 

@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 20:54:06
- * @LastEditTime : 2025-09-15 17:59:46
+ * @LastEditTime : 2025-09-16 18:27:24
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -74,6 +74,11 @@ void d_buzzer_init(void)
         ZST_LOGI(LOG_TAG, "ptask_buzzer create success!");
 }
 
+void d_buzzer_reset(void)
+{
+    dev.status = 0;
+    element_array[0].receive_change_flag = 1;
+}
 
 /****************************
  * static function

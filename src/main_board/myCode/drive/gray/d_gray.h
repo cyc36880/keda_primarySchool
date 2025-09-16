@@ -8,6 +8,7 @@ extern "C" {
 #include "myMain.h"
 
 void d_gray_init(void);
+void d_gray_reset(void);
 
 #ifdef __cplusplus
 }

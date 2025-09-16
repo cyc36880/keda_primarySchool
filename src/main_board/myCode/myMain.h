@@ -12,7 +12,7 @@ extern "C" {
 #define LOCK   1
 #define UNLOCK 0
 
-#define POWER_ON_PRESS_MS  3000 // 开机时长
+#define POWER_ON_PRESS_MS  1500 // 开机时长
 #define POWER_OFF_PRESS_MS 3000 // 关机时长
 
 #define DEVICE_ADDR_SPACE(I2CDEV, space)      I2CDEV ## _SPACE = I2CDEV+space-1

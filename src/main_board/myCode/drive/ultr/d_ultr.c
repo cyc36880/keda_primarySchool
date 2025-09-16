@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 17:32:07
- * @LastEditTime : 2025-09-15 20:37:01
+ * @LastEditTime : 2025-09-16 18:37:12
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -57,11 +57,7 @@ static data_group_t group = {
 /********************
  * global variables
  *******************/
-ultr_t ultr = {
-    .get_echo_pin_level = get_gpio_pin_level,
-    .get_countVal = get_countVal,
-    .set_trig_pin_level = set_trig_level,
-};
+ultr_t ultr = {0};
 
 /********************
  * global functions
@@ -72,6 +68,14 @@ void d_ultr_init(void)
      * 数据包初始化
      ****************/
     data_pack_add_group(&protocol_data_pack_KX0, &group);
+
+    /****************
+     * 设备初始化
+     ****************/
+    ultr.get_echo_pin_level = get_gpio_pin_level,
+    ultr.get_countVal = get_countVal,
+    ultr.set_trig_pin_level = set_trig_level,
+    ultr_init(&ultr, 0.667, 65535);
 
     /****************
      * 任务初始化
@@ -86,9 +90,16 @@ void d_ultr_init(void)
         ZST_LOGI(LOG_TAG, "ptask create success!");
 }
 
+void d_ultr_reset(void)
+{
+    dev.status = 0;
+    element_array[0].receive_change_flag = 1;
+}
+
 /****************************
  * static function
  ***************************/
+
 static void ptask_run_callback(ptask_t * ptask)
 {
     // 根据状态完成自动订阅
@@ -99,16 +110,18 @@ static void ptask_run_callback(ptask_t * ptask)
             data_group_get_element_4name(&group, "value")->subscribe = dev.status;
         }
     );
-
-    uint16_t value = get_ultr_distance();
-    dev.value[0] = value >> 8;
-    dev.value[1] = value & 0xff;
+    if (1 == dev.status)
+    {
+        uint16_t ultrvalue = get_ultr_distance();
+        ultrvalue /= 10;
+        dev.value[0] = ultrvalue >> 8;
+        dev.value[1] = ultrvalue & 0xff;
+    }
 }
 
 static uint16_t get_ultr_distance(void)
 {
-    // return ultr_get_distance(&ultr);
-    return 0;
+    return ultr_get_distance(&ultr);
 }
 
 static uint8_t get_gpio_pin_level(struct _ultr * ultr)

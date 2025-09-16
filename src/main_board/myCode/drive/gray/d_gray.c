@@ -77,6 +77,11 @@ void d_gray_init(void)
         ZST_LOGI(LOG_TAG, "ptask create success!");
 }
 
+void d_gray_reset(void)
+{
+    dev.status = 0;
+    element_array[0].receive_change_flag = 1;
+}
 
 /****************************
  * static function

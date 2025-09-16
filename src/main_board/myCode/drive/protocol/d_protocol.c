@@ -8,17 +8,6 @@
  *****************/
 #define LOG_TAG "protocol"
 
-#define D_PROTOCOL_PUSH_ACK(_ack)                                            \
-    do                                                                       \
-    {                                                                        \
-        if (0 == protocol_command.need_ack)                                  \
-            break;                                                           \
-        uint8_t ack = (_ack);                                                \
-        udc_pack_append_data(&protocol_pack_KX0, PACK_IDENTIFY_ID, 1, &ack); \
-    }                                                                        \
-    while(0)
-
-
 
 
 /****************************

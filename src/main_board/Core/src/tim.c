@@ -148,6 +148,11 @@ void TIM_Callback(void * tim)
         TIM_PeriodElapsedCallback(&btim1);
         BTIM_ClearITPendingBit(CW_BTIM1, BTIM_IT_OV);
     }
+    else if (CW_BTIM2 == tim)
+    {
+        // TIM_PeriodElapsedCallback(&btim2);
+        BTIM_ClearITPendingBit(CW_BTIM2, BTIM_IT_OV);
+    }
 }
 
 void TIM_PeriodElapsedCallback(TIME_HandleTypeDef * tim)

@@ -56,7 +56,7 @@ static data_group_t group = {
 /********************
  * global variables
  *******************/
-iremote_t iremote;
+iremote_t iremote = {0};
 
 
 /********************
@@ -91,6 +91,11 @@ void d_iremote_init(void)
         ZST_LOGI(LOG_TAG, "ptask create success!");
 }
 
+void d_iremote_reset(void)
+{
+    dev.status = 0;
+    element_array[0].receive_change_flag = 1;
+}
 
 /****************************
  * static function
@@ -98,7 +103,8 @@ void d_iremote_init(void)
 static void ptask_run_callback(ptask_t * ptask)
 {
     uint8_t remote_val = remote_scan(&iremote);
-    dev.id = remote_val;
+    if (remote_val)
+        dev.id = remote_val;
 
     #if ZST_LOG_LEVEL>0
         if (remote_val)

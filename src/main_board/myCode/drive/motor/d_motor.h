@@ -8,6 +8,7 @@ extern "C" {
 #include "myMain.h"
 
 void d_motor_init(void);
+void d_motor_reset(void);
 
 #ifdef __cplusplus
 }

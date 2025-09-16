@@ -43,13 +43,13 @@
 void drive_init(void)
 {
     d_protocol_init();
-
-    d_sys_init();
+    d_ultr_init();
     d_iremote_init();
+    d_sys_init();
     d_buzzer_init();
     d_misc_init();
     d_motor_init();
-    d_ultr_init();
+    
     d_gray_init();
 }
 

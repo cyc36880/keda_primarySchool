@@ -17,10 +17,11 @@ typedef struct _ultr
     uint8_t (*get_echo_pin_level)(struct _ultr *);// 获取GPIO电平
     void (*set_trig_pin_level)(struct _ultr *, uint8_t);
     uint32_t (*get_countVal)(struct _ultr *);// 获取计数器时间
-    float tick_ms; // 一个时钟约几毫秒
+    float tick_us; // 一个时钟约几微秒
+    uint8_t init_flash : 1; // 是否初始化
 } ultr_t;
 
-void ultr_init(ultr_t * iremote, float tick_ms, uint16_t timer_overflow_val);
+void ultr_init(ultr_t * ultr, float tick_ms, uint16_t timer_overflow_val);
 void ultr_timOverFlow_callback(ultr_t * ultr);
 void ultr_gpio_interrupt_callback(ultr_t * ultr);
 uint32_t ultr_get_distance(ultr_t * ultr);

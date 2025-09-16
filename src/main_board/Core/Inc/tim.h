@@ -15,6 +15,7 @@ typedef struct
 void MAX_ATIM_Init(void);
 void MAX_GTIM2_Init(void);
 void MAX_BTIM1_Init(void);
+void MAX_BTIM2_Init(void);
 
 #ifdef __cplusplus
 }

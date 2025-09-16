@@ -30,16 +30,16 @@ void MAX_GPIO_Init(void)
     /*************************
      *      超声波
      ************************/
-    // GPIO_InitStructure.IT = GPIO_IT_NONE;
-    // GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    // GPIO_InitStructure.Pins = ULTR_TRIG_Pin;
-    // GPIO_Init(ULTR_TRIG_Port, &GPIO_InitStructure);
+    GPIO_InitStructure.IT = GPIO_IT_NONE;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Pins = ULTR_TRIG_Pin;
+    GPIO_Init(ULTR_TRIG_Port, &GPIO_InitStructure);
 
-    // GPIO_InitStructure.IT = GPIO_IT_RISING | GPIO_IT_FALLING;
-    // GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
-    // GPIO_InitStructure.Pins = ULTR_ECHO_Pin;
-    // GPIO_Init(ULTR_ECHO_Port, &GPIO_InitStructure);
-    // NVIC_EnableIRQ(GPIOA_IRQn);
+    GPIO_InitStructure.IT = GPIO_IT_RISING | GPIO_IT_FALLING;
+    GPIO_InitStructure.Mode = GPIO_MODE_INPUT_PULLUP;
+    GPIO_InitStructure.Pins = ULTR_ECHO_Pin;
+    GPIO_Init(ULTR_ECHO_Port, &GPIO_InitStructure);
+    NVIC_EnableIRQ(GPIOA_IRQn);
 
     /**********************
      *       开关

@@ -313,7 +313,7 @@ void BTIM1_IRQHandler(void)
 void BTIM2_IRQHandler(void)
 {
     /* USER CODE BEGIN */
-
+    TIM_Callback(CW_BTIM2);
     /* USER CODE END */
 }
 

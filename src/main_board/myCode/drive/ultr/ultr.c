@@ -1,19 +1,22 @@
 #include "ultr.h"
 #include "sys/delay.h"
 
-void ultr_init(ultr_t * iremote, float tick_ms, uint16_t timer_overflow_val)
+void ultr_init(ultr_t * ultr, float tick_us, uint16_t timer_overflow_val)
 {
-    iremote->tick_ms = tick_ms;
-    iremote->timer_overflow_val = timer_overflow_val;
+    ultr->tick_us = tick_us;
+    ultr->timer_overflow_val = timer_overflow_val;
+    ultr->init_flash = 1;
 }
 
 void ultr_timOverFlow_callback(ultr_t * ultr)
 {
+    if (0 == ultr->init_flash) return;
     ultr->overFlow_count++;
 }
 
 void ultr_gpio_interrupt_callback(ultr_t * ultr)
 {
+    if (0 == ultr->init_flash) return;
     if (1 == ultr->get_echo_pin_level(ultr)) // 捕获到上升沿
     {
         ultr->overFlow_count = 0;
@@ -24,7 +27,7 @@ void ultr_gpio_interrupt_callback(ultr_t * ultr)
     {
         ultr->get_risingEdge = 0;
         uint32_t tick_diff = ultr->get_countVal(ultr) + ultr->overFlow_count * ultr->timer_overflow_val - ultr->get_risingEdge_tick;
-        tick_diff = tick_diff * ultr->tick_ms;
+        tick_diff = tick_diff * ultr->tick_us;
         ultr->distance = tick_diff * 17 / 100;
     }
 }

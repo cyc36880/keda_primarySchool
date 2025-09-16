@@ -8,6 +8,7 @@ extern "C" {
 #include "myMain.h"
 
 void d_misc_init(void);
+void d_misc_reset(void);
 
 #ifdef __cplusplus
 }
