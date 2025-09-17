@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 13:55:25
- * @LastEditTime : 2025-09-16 19:23:32
+ * @LastEditTime : 2025-09-16 20:06:20
  * @Description  :
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -68,7 +68,7 @@ static data_element_t element_array[] = {
 };
 static uint8_t comparison_buffer[sizeof(dev)] = {0};
 static data_group_t group = {
-    .name = "sys",
+    .name = LOG_TAG,
     .addr = DEVICE_ADDR_SYSTEM,
     .elements_array = element_array,
     .elements_count = sizeof(element_array) / sizeof(element_array[0]),
@@ -126,7 +126,6 @@ static void ptask_run_callback(ptask_t *ptask)
         }
     );
 
-
     if (0 == dev.sys_start)
     {
         ZST_LOG("POWER OFF");
@@ -145,7 +144,7 @@ static void ptask_run_callback(ptask_t *ptask)
             if (zst_tick_elaps(last_tick) > POWER_OFF_PRESS_MS)
             {
                 dev.sys_start = 0;
-                GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, !POWER_EN_LEVEL);
+                GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, (GPIO_PinState)!POWER_EN_LEVEL);
             }
         }
         else
@@ -157,7 +156,7 @@ static void ptask_run_callback(ptask_t *ptask)
 
 static void timer_cb(zst_timer_t *timer)
 {
-    // 1.8 ~ 2.0
+    // 1.8  ~ 2.0
     // 2233 ~ 2481
     static uint8_t adc_check_count = 0;
     if (adc_check_count < FILTERING_NUM)

@@ -131,7 +131,7 @@ static uint8_t get_gpio_pin_level(struct _ultr * ultr)
 
 static void set_trig_level(struct _ultr * ultr, uint8_t level)
 {
-    GPIO_WritePin(ULTR_TRIG_Port, ULTR_TRIG_Pin, level);
+    GPIO_WritePin(ULTR_TRIG_Port, ULTR_TRIG_Pin, (GPIO_PinState)level);
 }
 
 static uint32_t get_countVal(struct _ultr *ultr)
