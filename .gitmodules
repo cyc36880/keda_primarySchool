@@ -1,0 +1,6 @@
+[submodule "src/main_board/myCode/component/udcheck"]
+	path = src/main_board/myCode/component/udcheck
+	url = git@github.com:cyc36880/udcheck.git
+[submodule "src/main_board/myCode/component/zs_tools"]
+	path = src/main_board/myCode/component/zs_tools
+	url = git@github.com:cyc36880/zs_tools.git
