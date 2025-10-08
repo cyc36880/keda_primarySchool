@@ -13,11 +13,13 @@
 /****************************
  * function declaration
  ***************************/
+static void ptask_event_callback(ptask_t *task, ptask_event_t *e);
 static int udc_send_bytes_callback(const struct _udc_pack_t *pack, const uint8_t *buf, uint16_t len);
 static void ptask_run_callback(ptask_t * ptask);
 static void udc_event_receive_finsh(udc_event_t * e);
 static void subscribe_loop(void);
 static int calculate_verify_func(const struct _udc_pack_t *pack, const uint8_t *buf, uint16_t len, uint8_t *verify);
+
 
 /********************
  * static variables
@@ -64,10 +66,7 @@ void d_protocol_init(void)
     /****************
      * 任务初始化
      ****************/
-    ptask_base_t task_base = {
-        .run = ptask_run_callback
-    };
-    ptask_1_collection.ptask_protocol = ptask_create(ptask_root_1_collection.ptask_root_1, &task_base);
+    ptask_1_collection.ptask_protocol = ptask_create(ptask_root_1_collection.ptask_root_1, ptask_event_callback, NULL);
     if (NULL == ptask_1_collection.ptask_protocol)
         ZST_LOGE(LOG_TAG, "ptask_protocol create failed!");
     else
@@ -78,6 +77,19 @@ void d_protocol_init(void)
 /****************************
  * static function
  ***************************/
+static void ptask_event_callback(ptask_t *task, ptask_event_t *e)
+{
+    switch (ptask_get_code(e))
+    {
+        case PTASK_EVENT_RUN:
+            ptask_run_callback(task);
+            break;
+            
+        default:
+            break;
+    }
+}
+
 static void ptask_run_callback(ptask_t * ptask)
 {
     subscribe_loop();

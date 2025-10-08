@@ -30,7 +30,7 @@ enum DEVICE_ADDR
 
 typedef struct 
 {
-    ptask_t * ptask_root_1;
+    ptask_root_t * ptask_root_1;
 } ptask_root_1_collection_t;
 
 typedef struct 

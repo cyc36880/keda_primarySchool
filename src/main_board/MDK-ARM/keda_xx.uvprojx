@@ -499,24 +499,9 @@
               <FilePath>..\myCode\component\udcheck\src\core\udc_core.c</FilePath>
             </File>
             <File>
-              <FileName>udc_core.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\myCode\component\udcheck\src\core\udc_core.h</FilePath>
-            </File>
-            <File>
               <FileName>udc_event.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\myCode\component\udcheck\src\core\udc_event.c</FilePath>
-            </File>
-            <File>
-              <FileName>udc_event.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\myCode\component\udcheck\src\core\udc_event.h</FilePath>
-            </File>
-            <File>
-              <FileName>udc_hal.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\myCode\component\udcheck\src\hal\udc_hal.h</FilePath>
             </File>
             <File>
               <FileName>udc_hal_tick.c</FileName>
@@ -524,19 +509,9 @@
               <FilePath>..\myCode\component\udcheck\src\hal\udc_hal_tick.c</FilePath>
             </File>
             <File>
-              <FileName>udc_hal_tick.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\myCode\component\udcheck\src\hal\udc_hal_tick.h</FilePath>
-            </File>
-            <File>
               <FileName>udc_mem.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\myCode\component\udcheck\src\misc\udc_mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>udc_mem.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\myCode\component\udcheck\src\misc\udc_mem.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -9,7 +9,6 @@ extern "C" {
 #include "iremote.h"
 
 void d_iremote_init(void);
-void d_iremote_reset(void);
 
 extern iremote_t iremote;
 

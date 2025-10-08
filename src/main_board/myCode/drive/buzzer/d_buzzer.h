@@ -9,7 +9,6 @@ extern "C" {
 
 void d_buzzer_init(void);
 
-void d_buzzer_reset(void);
 
 #ifdef __cplusplus
 }

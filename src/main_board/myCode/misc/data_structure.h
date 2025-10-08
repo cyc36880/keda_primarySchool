@@ -49,6 +49,8 @@ do                                                                              
     }                                                                                         \
 } while (0)
 
+#define DATA_GROUP_UINTPTR_2_NAME(element_uintptr) ((char *)(uintptr_t)(element_uintptr))
+
 typedef struct _data_element
 {
     char * name;
@@ -74,13 +76,29 @@ typedef struct _data_pack
     data_group_t * group_array;
 } data_pack_t;
 
+/****************
+ * task message
+ **************/
+typedef enum
+{
+    PTASK_MESSAGE_TYPE_RESET_DEVICE = 0, // 设备状态复位
+} PTASK_MESSAGE_TYPE_t;
+
+typedef struct 
+{
+    ptask_t * from;
+    PTASK_MESSAGE_TYPE_t message_type; // 消息类型
+} ptask_user_message_t;
+
+
 int data_pack_add_group(data_pack_t * data_pack, data_group_t * data_group);
 
 data_group_t * data_pack_get_group_4addr(data_pack_t * data_pack, uint8_t addr);
-data_group_t * data_pack_get_group_4name(data_pack_t * data_pack, char * name);
+// data_group_t * data_pack_get_group_4name(data_pack_t * data_pack, char * name);
 
 data_element_t * data_group_get_element_4addr(data_group_t * data_group, uint8_t addr);
-data_element_t * data_group_get_element_4name(data_group_t * data_group, char * name);
+// data_element_t * data_group_get_element_4name(data_group_t * data_group, char * name);
+data_element_t * data_group_get_element_4name2(data_group_t * data_group, uintptr_t name);
 
 uint32_t data_group_get_size(data_group_t * data_group);
 int data_element_eliminate_differences(data_group_t * data_group, data_element_t * element);

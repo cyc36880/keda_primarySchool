@@ -64,10 +64,12 @@ ptask_1_collection_t ptask_1_collection = {0};
 void setup(void)
 {
     zst_init();
-    ptask_root_1_collection.ptask_root_1 = ptask_root_create(&zst_ptask_list, NULL); // 创建根任务
+    ptask_root_1_collection.ptask_root_1 = ptask_root_create(&zst_ptask_list); // 创建根任务
+    ptask_root_select(&zst_ptask_list, ptask_root_1_collection.ptask_root_1); // 选择根任务
+
     drive_init();
     ZST_LOG("wait on");
-    wait_start();
+    // wait_start();
     ZST_LOG("power on");
 }
 

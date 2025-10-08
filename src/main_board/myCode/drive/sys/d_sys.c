@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 13:55:25
- * @LastEditTime : 2025-09-16 20:06:20
+ * @LastEditTime : 2025-10-08 16:09:04
  * @Description  :
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -27,6 +27,13 @@
 #define LOG_TAG "sys"
 #define FILTERING_NUM 9 // 滤波数组长度
 
+enum DEV_ELEMENT_NAME
+{
+    DEV_ELEMENT_NAME_power=1,
+    DEV_ELEMENT_NAME_sys_start,
+    DEV_ELEMENT_NAME_stop_all_device,
+};
+
 typedef struct
 {
     uint8_t power;     // 电量
@@ -37,6 +44,7 @@ typedef struct
 /****************************
  * function declaration
  ***************************/
+static void ptask_event_callback(ptask_t *task, ptask_event_t *e);
 static void ptask_run_callback(ptask_t *ptask);
 static void timer_cb(zst_timer_t *timer);
 static int compare_uint16(const void *a, const void *b);
@@ -49,19 +57,19 @@ static uint32_t last_tick = 0; // 关机计时
 static d_drive_t dev = {0};
 static data_element_t element_array[] = {
     [0] = {
-        .name = "power",
+        .name = DATA_GROUP_UINTPTR_2_NAME(DEV_ELEMENT_NAME_power),
         .data = &dev.power,
         .size = sizeof(dev.power),
         .subscribe = 1, // 默认订阅
     },
     [1] = {
-        .name = "sys_start", 
+        .name = DATA_GROUP_UINTPTR_2_NAME(DEV_ELEMENT_NAME_sys_start), 
         .data = &dev.sys_start, 
         .size = sizeof(dev.sys_start),
         .subscribe = 1, // 默认订阅
     },
     [2] = {
-        .name = "stop_all_device",
+        .name = DATA_GROUP_UINTPTR_2_NAME(DEV_ELEMENT_NAME_stop_all_device),
         .data = &dev.stop_all_device,
         .size = sizeof(dev.stop_all_device),
     }
@@ -89,16 +97,17 @@ void d_sys_init(void)
      ****************/
     dev.sys_start = 1;
     data_pack_add_group(&protocol_data_pack_KX0, &group);
+
+
     /****************
      * 任务初始化
      ****************/
-    ptask_base_t task_base = {
-        .run = ptask_run_callback};
-    ptask_1_collection.ptask_sys = ptask_create(ptask_root_1_collection.ptask_root_1, &task_base);
+    ptask_1_collection.ptask_sys = ptask_create(ptask_root_1_collection.ptask_root_1, ptask_event_callback, NULL);
     if (NULL == ptask_1_collection.ptask_sys)
         ZST_LOGE(LOG_TAG, "ptask_sys create failed!");
     else
         ZST_LOGI(LOG_TAG, "ptask_sys create success!");
+
 
     /******************
      *   电量定时器
@@ -109,26 +118,43 @@ void d_sys_init(void)
 /****************************
  * static function
  ***************************/
+static void ptask_event_callback(ptask_t *task, ptask_event_t *e)
+{
+    switch (ptask_get_code(e))
+    {
+        case PTASK_EVENT_RUN:
+            ptask_run_callback(task);
+            break;
+            
+        default:
+            break;
+    }
+}
+
 static void ptask_run_callback(ptask_t *ptask)
 {
     data_element_t * element = NULL;
-     DATA_GROUP_ELEMENT_CHACK_CHANGE_FOREACH(&group, element,
-        if (0 == strcmp("stop_all_device", element->name))
+    DATA_GROUP_ELEMENT_CHACK_CHANGE_FOREACH(&group, element,
+        switch ((uintptr_t)element->name)
         {
-            if (1 == dev.stop_all_device)
-                dev.stop_all_device = 0;
-            d_iremote_reset();
-            d_buzzer_reset();
-            d_misc_reset();
-            d_motor_reset();
-            d_gray_reset();
-            d_ultr_reset();
+            case DEV_ELEMENT_NAME_stop_all_device:
+                if (1 == dev.stop_all_device)
+                    dev.stop_all_device = 0;
+                // TODO: 停止所有设备
+                ptask_user_message_t msg;
+                msg.from = ptask_1_collection.ptask_sys;
+                msg.message_type = PTASK_MESSAGE_TYPE_RESET_DEVICE;
+                ptask_root_send_event(ptask_root_1_collection.ptask_root_1, PTASK_EVENT_USER, (void *)&msg);
+                break;
+            default:
+                break;
         }
     );
 
     if (0 == dev.sys_start)
     {
         ZST_LOG("POWER OFF");
+        GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, (GPIO_PinState)!POWER_EN_LEVEL);
         while (GPIO_ReadPin(GPIO_POWER_Port, GPIO_POWER_Pin) == 0)
             ;
         NVIC_SystemReset(); // 复位
@@ -144,7 +170,6 @@ static void ptask_run_callback(ptask_t *ptask)
             if (zst_tick_elaps(last_tick) > POWER_OFF_PRESS_MS)
             {
                 dev.sys_start = 0;
-                GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, (GPIO_PinState)!POWER_EN_LEVEL);
             }
         }
         else

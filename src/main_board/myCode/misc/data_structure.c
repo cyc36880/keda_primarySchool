@@ -67,6 +67,20 @@ data_element_t * data_group_get_element_4name(data_group_t * data_group, char * 
     return NULL;
 }
 
+data_element_t * data_group_get_element_4name2(data_group_t * data_group, uintptr_t name)
+{
+    if (NULL == data_group || 0 == data_group->elements_count) return NULL;
+    data_element_t * element;
+
+    DATA_GROUP_ELEMENT_FOREACH(data_group, element, 
+        if (name == (uintptr_t)element->name)
+        {
+            return element;
+        }
+    );
+    return NULL;
+}
+
 uint32_t data_group_get_size(data_group_t * data_group)
 {
     uint32_t size = 0;
