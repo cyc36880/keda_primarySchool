@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 20:54:06
- * @LastEditTime : 2025-10-08 16:02:27
+ * @LastEditTime : 2025-10-09 16:30:11
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -64,10 +64,16 @@ static data_group_t group = {
 void d_buzzer_init(void)
 {
     /****************
+     *  设备初始化
+     ****************/
+    set_buzzer_status(0);
+
+    
+    /****************
      * 数据包初始化
      ****************/
     data_pack_add_group(&protocol_data_pack_KX0, &group);
-    set_buzzer_status(0);
+    
 
     /****************
      * 任务初始化

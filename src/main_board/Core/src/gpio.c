@@ -59,7 +59,17 @@ void MAX_GPIO_Init(void)
     GPIO_Init(GPIO_POWER_EN_Port, &GPIO_InitStructure);
     GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, (GPIO_PinState)!POWER_EN_LEVEL);
 
-    
+    /**********************
+     *     灰度RGB
+     *********************/
+    GPIO_InitStructure.IT = GPIO_IT_NONE;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Pins = GPIO_GRAY_B_Pin | GPIO_GRAY_G_Pin | GPIO_GRAY_R_Pin;
+    GPIO_Init(CW_GPIOB, &GPIO_InitStructure);
+    GPIO_WritePin(GPIO_GRAY_B_Port, GPIO_GRAY_B_Pin, GPIO_Pin_SET);
+    GPIO_WritePin(GPIO_GRAY_G_Port, GPIO_GRAY_G_Pin, GPIO_Pin_SET);
+    GPIO_WritePin(GPIO_GRAY_R_Port, GPIO_GRAY_R_Pin, GPIO_Pin_SET);
+
     /**********************
      *     红外遥控器
      *********************/

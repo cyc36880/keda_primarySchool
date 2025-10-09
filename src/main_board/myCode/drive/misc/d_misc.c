@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-06 20:59:33
- * @LastEditTime : 2025-10-08 15:48:26
+ * @LastEditTime : 2025-10-09 17:23:58
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -123,6 +123,9 @@ static data_group_t group = {
  *******************/
 void d_misc_init(void)
 {
+    /****************
+     *  设备初始化
+     ****************/
     set_led_color(0, 0, 0);
 
 
@@ -172,7 +175,7 @@ static void ptask_run_callback(ptask_t * ptask)
 
     dev.light =  number_map(adc_get_value(ADC_LIGHT_CHANNEL), 0, 4095+1, 0, 255 + 1);
     dev.res   =  number_map(adc_get_value(ADC_RHEOSTAT_CHANNEL), 0, 4095+1, 0, 255 + 1);
-    dev.infrared =  GPIO_ReadPin(INFRARED_Port, INFRARED_Pin);
+    dev.infrared =  number_map(adc_get_value(ADC_INFRARED_SENSOR_CHANNEL), 0, 4095+1, 0, 255 + 1);
 
     // 根据状态完成自动订阅
     data_element_t * element = NULL;

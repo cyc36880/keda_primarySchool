@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 17:32:07
- * @LastEditTime : 2025-10-08 16:11:06
+ * @LastEditTime : 2025-10-09 18:22:48
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -29,6 +29,7 @@ typedef struct
 /****************************
  * function declaration
  ***************************/
+static void timer_callback(zst_timer_t *timer);
 static void ptask_event_callback(ptask_t *task, ptask_event_t *e);
 static void ptask_run_callback(ptask_t * ptask);
 static void ptask_user_message_callback(const ptask_user_message_t *msg);
@@ -40,6 +41,7 @@ static uint32_t get_countVal(struct _ultr *iremote);
 /********************
  * static variables
  *******************/
+static zst_timer_t  * timer_handle = NULL;
 static d_drive_t dev = {0};
 static data_element_t element_array[] = {
     [0] = {
@@ -93,6 +95,12 @@ void d_ultr_init(void)
         ZST_LOGE(LOG_TAG, "ptask create failed!");
     else
         ZST_LOGI(LOG_TAG, "ptask create success!");
+
+    /****************
+     * 定时器初始化
+     ****************/
+    timer_handle = zst_timer_create(&zst_ztimer, timer_callback, 200, NULL);
+    zst_timer_pause(timer_handle);
 }
 
 
@@ -115,6 +123,15 @@ static void ptask_event_callback(ptask_t *task, ptask_event_t *e)
             break;
     }
 }
+
+static void timer_callback(zst_timer_t *timer)
+{
+    uint16_t ultrvalue = get_ultr_distance();
+    ultrvalue /= 10;
+    dev.value[0] = (ultrvalue >> 8) & 0xff;
+    dev.value[1] = (ultrvalue) & 0xff;
+}
+
 static void ptask_run_callback(ptask_t * ptask)
 {
     // 根据状态完成自动订阅
@@ -124,18 +141,19 @@ static void ptask_run_callback(ptask_t * ptask)
         {
             case DEV_ELEMENT_NAME_status:
                 data_group_get_element_4name2(&group, DEV_ELEMENT_NAME_value)->subscribe = dev.status;
+                if (1 == dev.status)
+                {
+                    zst_timer_resume(timer_handle);
+                }
+                else
+                {
+                    zst_timer_pause(timer_handle);
+                }
                 break;
             default:
                 break;
         }
     );
-    if (1 == dev.status)
-    {
-        uint16_t ultrvalue = get_ultr_distance();
-        ultrvalue /= 10;
-        dev.value[0] = ultrvalue >> 8;
-        dev.value[1] = ultrvalue & 0xff;
-    }
 }
 
 

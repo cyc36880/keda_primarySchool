@@ -38,14 +38,14 @@ void MAX_ATIM_Init(void)
 
     ATIM_OC1AInit(&ATIM_OCInitStruct);
     ATIM_OC2AInit(&ATIM_OCInitStruct);
-    ATIM_OC3AInit(&ATIM_OCInitStruct);
+    // ATIM_OC3AInit(&ATIM_OCInitStruct);
     ATIM_OC1BInit(&ATIM_OCInitStruct);
     ATIM_OC2BInit(&ATIM_OCInitStruct);
     ATIM_OC3BInit(&ATIM_OCInitStruct);
 
     ATIM_SetCompare1A(0);
     ATIM_SetCompare2A(0);
-    ATIM_SetCompare3A(0);
+    // ATIM_SetCompare3A(0);
     ATIM_SetCompare1B(0);
     ATIM_SetCompare2B(0);
     ATIM_SetCompare3B(0);
@@ -105,21 +105,27 @@ static void TIM_GPIO_Init(TIME_HandleTypeDef *timeHandle)
         __RCC_GPIOA_CLK_ENABLE();
         __RCC_GPIOB_CLK_ENABLE();
 
-        PB00_AFx_ATIMCH2B();
-        PB01_AFx_ATIMCH3B();
-        PB02_AFx_ATIMCH1A();
-        PB10_AFx_ATIMCH2A();
-        PB11_AFx_ATIMCH3A();
+        // PB00_AFx_ATIMCH2B();
+        // PB01_AFx_ATIMCH3B();
+        // PB02_AFx_ATIMCH1A();
+        // PB10_AFx_ATIMCH2A();
+        // PB11_AFx_ATIMCH3A();
+        // PA15_AFx_ATIMCH1B();
+
+        PA08_AFx_ATIMCH1A();
+        PA09_AFx_ATIMCH2A();
+        PB15_AFx_ATIMCH3B();
+        PB14_AFx_ATIMCH2B();
         PA15_AFx_ATIMCH1B();
 
         // 引脚初始化必须放在复用之后
         GPIO_InitStruct.IT = GPIO_IT_NONE;
         GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-        GPIO_InitStruct.Pins = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_10 | GPIO_PIN_11;
-        GPIO_Init(CW_GPIOB, &GPIO_InitStruct);
-
-        GPIO_InitStruct.Pins = GPIO_PIN_15;
+        GPIO_InitStruct.Pins = GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_15;
         GPIO_Init(CW_GPIOA, &GPIO_InitStruct);
+
+        GPIO_InitStruct.Pins = GPIO_PIN_15 | GPIO_PIN_14;
+        GPIO_Init(CW_GPIOB, &GPIO_InitStruct);
     }
     else if (&gtim2 == timeHandle)
     {

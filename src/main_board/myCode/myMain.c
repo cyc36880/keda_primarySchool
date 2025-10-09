@@ -58,6 +58,7 @@ static void timer_cb(zst_timer_t *timer);
 ptask_root_1_collection_t ptask_root_1_collection = {0};
 ptask_1_collection_t ptask_1_collection = {0};
 
+
 /********************
  * global functions
  *******************/
@@ -69,7 +70,8 @@ void setup(void)
 
     drive_init();
     ZST_LOG("wait on");
-    // wait_start();
+    wait_start();
+    GPIO_WritePin(GPIO_POWER_EN_Port, GPIO_POWER_EN_Pin, POWER_EN_LEVEL);
     ZST_LOG("power on");
 }
 

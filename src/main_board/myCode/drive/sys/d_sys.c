@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 13:55:25
- * @LastEditTime : 2025-10-08 16:09:04
+ * @LastEditTime : 2025-10-09 17:21:12
  * @Description  :
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -112,7 +112,7 @@ void d_sys_init(void)
     /******************
      *   电量定时器
      ****************/
-    zst_timer_create(&zst_ztimer, timer_cb, 10, NULL);
+    zst_timer_create(&zst_ztimer, timer_cb, 50, NULL);
 }
 
 /****************************

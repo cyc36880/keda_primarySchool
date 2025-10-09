@@ -2,7 +2,7 @@
  * @Author       : 蔡雅超 (ZIShen)
  * @LastEditors  : ZIShen
  * @Date         : 2025-09-12 17:32:31
- * @LastEditTime : 2025-10-08 15:38:51
+ * @LastEditTime : 2025-10-09 16:35:01
  * @Description  : 
  * Copyright (c) 2025 Author 蔡雅超 email: 2672632650@qq.com, All Rights Reserved.
  */
@@ -79,6 +79,9 @@ static data_group_t group = {
  *******************/
 void d_motor_init(void)
 {
+    /****************
+     *  设备初始化
+     ****************/
     motorL_set_speed(0);
     motorR_set_speed(0);
 
@@ -152,6 +155,7 @@ static void ptask_user_message_callback(const ptask_user_message_t *msg)
         case PTASK_MESSAGE_TYPE_RESET_DEVICE:
             dev.speed[0] = 0;
             dev.speed[1] = 0;
+            element_array[0].receive_change_flag= 1;
             break;
 
         default:
@@ -160,15 +164,15 @@ static void ptask_user_message_callback(const ptask_user_message_t *msg)
 }
 
 
-static void motorL_set_speed(int16_t speed)
+static void motorR_set_speed(int16_t speed)
 {
     speed = min(100, max(-100, speed));
     uint16_t speed_abs = myabs(speed);
     
     if (speed_abs == 0)
     {
+        ATIM_SetCompare1A(0);
         ATIM_SetCompare2A(0);
-        ATIM_SetCompare3A(0);
         return;
     }
 
@@ -176,24 +180,24 @@ static void motorL_set_speed(int16_t speed)
 
     if (speed > 0)
     {
+        ATIM_SetCompare1A(0);
         ATIM_SetCompare2A(speed_abs);
-        ATIM_SetCompare3A(0);
     }
     else
     {
+        ATIM_SetCompare1A(speed_abs);
         ATIM_SetCompare2A(0);
-        ATIM_SetCompare3A(speed_abs);
     }
 }
 
-static void motorR_set_speed(int16_t speed)
+static void motorL_set_speed(int16_t speed)
 {
     speed = min(100, max(-100, speed));
     uint16_t speed_abs = myabs(speed);
     if (speed_abs == 0)
     {
-        GTIM_SetCompare2(CW_GTIM2, 0);
-        GTIM_SetCompare1(CW_GTIM2, 0);
+        ATIM_SetCompare3B(0);
+        ATIM_SetCompare2B(0);
         return;
     }
 
@@ -201,13 +205,13 @@ static void motorR_set_speed(int16_t speed)
 
     if (speed > 0)
     {
-        GTIM_SetCompare2(CW_GTIM2, speed_abs);
-        GTIM_SetCompare1(CW_GTIM2, 0);
+        ATIM_SetCompare3B(0);
+        ATIM_SetCompare2B(speed_abs);
     }
     else
     {
-        GTIM_SetCompare2(CW_GTIM2, 0);
-        GTIM_SetCompare1(CW_GTIM2, speed_abs);
+        ATIM_SetCompare3B(speed_abs);
+        ATIM_SetCompare2B(0);
     }
 }
 

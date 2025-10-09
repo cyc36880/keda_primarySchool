@@ -120,8 +120,18 @@ static void ptask_event_callback(ptask_t *task, ptask_event_t *e)
 
 static void ptask_run_callback(ptask_t * ptask)
 {
+    static uint8_t key_count_flag = 0;
     uint8_t remote_val = remote_scan(&iremote);
-    dev.id = remote_val;
+    if (remote_get_key_count(&iremote) == 0 && key_count_flag > 0)
+    {
+        key_count_flag = 0;
+        dev.id = remote_val;
+    }
+    if (remote_get_key_count(&iremote)>0 && key_count_flag == 0)
+    {
+        key_count_flag = 1;
+        dev.id = remote_val;
+    }
 
     #if ZST_LOG_LEVEL>0
         if (remote_val)

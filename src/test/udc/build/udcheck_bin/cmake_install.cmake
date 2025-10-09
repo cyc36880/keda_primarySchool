@@ -1,4 +1,4 @@
-# Install script for directory: D:/Desktop/keda_xx2/code/src/main_board/myCode/component/udcheck
+# Install script for directory: D:/Desktop/keda_xx/code/src/main_board/myCode/component/udcheck
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "D:/Desktop/keda_xx2/code/src/test/udc/build/udcheck_bin/install_local_manifest.txt"
+  file(WRITE "D:/Desktop/keda_xx/code/src/test/udc/build/udcheck_bin/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

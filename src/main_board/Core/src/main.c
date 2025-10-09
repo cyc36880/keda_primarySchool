@@ -13,7 +13,7 @@ int main()
     RCC_Configuration();
     MAX_GPIO_Init();
     MAX_ATIM_Init();
-    MAX_GTIM2_Init();
+    // MAX_GTIM2_Init();
     MAX_BTIM1_Init();
     MAX_UART1_Init();
     MAX_ADC_Init();

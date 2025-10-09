@@ -64,6 +64,7 @@ uint32_t adc_get_value(uint32_t adc_channel)
 static void ADC_GPIO_Init(ADC_HandleTypeDef *adcHandle)
 {
     __RCC_GPIOA_CLK_ENABLE();
+    __RCC_GPIOB_CLK_ENABLE();
 
     PA00_ANALOG_ENABLE();
     PA01_ANALOG_ENABLE();
@@ -73,6 +74,7 @@ static void ADC_GPIO_Init(ADC_HandleTypeDef *adcHandle)
     PA05_ANALOG_ENABLE();
     PA06_ANALOG_ENABLE();
     PA07_ANALOG_ENABLE();
+    PB10_ANALOG_ENABLE();
 }
 
 

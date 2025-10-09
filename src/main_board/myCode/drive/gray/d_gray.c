@@ -153,12 +153,15 @@ static void ptask_user_message_callback(const ptask_user_message_t *msg)
 
 static void set_gray_light(uint8_t r, uint8_t g, uint8_t b)
 {
-    uint16_t r_val = number_map(r, 0, 255 + 1, 0, 1000 + 1);
-    uint16_t g_val = number_map(g, 0, 255 + 1, 0, 1000 + 1);
-    uint16_t b_val = number_map(b, 0, 255 + 1, 0, 1000 + 1);
+    // uint16_t r_val = number_map(r, 0, 255 + 1, 0, 1000 + 1);
+    // uint16_t g_val = number_map(g, 0, 255 + 1, 0, 1000 + 1);
+    // uint16_t b_val = number_map(b, 0, 255 + 1, 0, 1000 + 1);
 
-    ATIM_SetCompare1A(1000 - r_val);
-    ATIM_SetCompare3B(1000 - g_val);
-    ATIM_SetCompare2B(1000 - b_val);
+    // ATIM_SetCompare1A(1000 - r_val);
+    // ATIM_SetCompare3B(1000 - g_val);
+    // ATIM_SetCompare2B(1000 - b_val);
+    GPIO_WritePin(GPIO_GRAY_B_Port, GPIO_GRAY_B_Pin, b ? GPIO_Pin_RESET : GPIO_Pin_SET);
+    GPIO_WritePin(GPIO_GRAY_G_Port, GPIO_GRAY_G_Pin, g ? GPIO_Pin_RESET : GPIO_Pin_SET);
+    GPIO_WritePin(GPIO_GRAY_R_Port, GPIO_GRAY_R_Pin, r ? GPIO_Pin_RESET : GPIO_Pin_SET);
 }
 
